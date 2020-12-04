@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from show import show_all_frames
 
 
-def create_spampinato_kernels():
-    # 6 scales, 4 orientations. That takes care of ksizem and theta.
+def spampinatoKernels():
+    # 6 scales, 4 orientations. That takes care of ksize and theta.
     # there may be a weakness because I am only using symmetric kernels (i.e. (4,4)); why not oblong kernels ?
 
     # for sigma, we want to choose a value which will allow the filter to sift out features of the fish.
@@ -29,6 +29,6 @@ def create_spampinato_kernels():
 
 
 if __name__ == "__main__":
-    kernels = create_spampinato_kernels()
+    kernels = spampinato_kernels()
     plt.imshow(kernels[20])
     plt.show()
