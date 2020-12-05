@@ -1,40 +1,45 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from fishes import test_image
 from show import show_all_frames
 from scipy.stats import moment
 
 
-def spampinatoHistogramFeatures(img):
+def spampinatoHistogramFeatures(grayImg):
     # first convert the picture to gray levels, then
     # we need: mean, standard deviation, third moment, fourth moment, contrast, correlation, energy, homogeneity
 
-    # mean
-    grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # Um what?: ref [6] of Spampinato et al. discusses the usefulness of histograms wrt texture features on pages 850-851
+    # The only measures mentioned are: mean, variance, R, standard deviation, third moment, fourth moment, uniformity, average entropy
+
+    # So how are:
+    # contrast, correlation, energy, homogeneity (as described in Spampinato et al.)
+    # mapped to:
+    # variance, R, uniformity, average entropy.
+
+    # Maybe there is a 1-to-1 mapping, maybe not. I will stop at the 4 I know to be accurate, and revisit if I have time.
     histogram = cv2.calcHist([grayImg], [0], None, [256], [0, 256])
 
-    mean = np.mean(histogram)
-    stdDeviation = np.std(histogram)
-    thirdOrderMoment = moment(histogram, 3)
-    fourthOrderMoment = moment(histogram, 4)
+    histoFeatures = []
+    histoFeatures.append(np.mean(histogram))
+    histoFeatures.append(np.std(histogram))
+    histoFeatures.append(moment(histogram, 3)[0])
+    histoFeatures.append(moment(histogram, 4)[0])
+
+    return ('histoFeatures', histoFeatures)
 
 
 def contrast(img):
     """Some of the values needed to replicate the work of Spampinato et al. are not available as Python libraries.
      They take some descriptors from section 11.3.3 in Digital Image Processing (3rd Edition) by Gonzalez, Woods"""
-
     raise NotImplementedError
 
 
 def correlation(img):
     """Some of the values needed to replicate the work of Spampinato et al. are not available as Python libraries.
      They take some descriptors from section 11.3.3 in Digital Image Processing (3rd Edition) by Gonzalez, Woods"""
-
-    m_r = (mr + i)*p_ij for i in range(len(img.shape[0]))
-    m_c = (mc + j)*p_ij for j in range(len(img.shape[1]))
-
-    for i in range(len(img.shape[0])):
-        for j in range(len(img.shape[1])):
+    raise NotImplementedError
 
 
 def energy(img):
@@ -50,3 +55,6 @@ def homogeneity(img):
 
 
 if __name__ == "__main__":
+    img = test_image(True)
+    histoFeats = spampinatoHistogramFeatures(img)
+    print('hello')

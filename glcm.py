@@ -1,19 +1,14 @@
-# https://scikit-image.org/docs/dev/api/skimage.feature.html#skimage.feature.greycomatrix
-# https://www.mathworks.com/help/images/texture-analysis-using-the-gray-level-co-occurrence-matrix-glcm.html
 from skimage.feature import greycomatrix, greycoprops
 from fishes import test_image
+import mahotas as mh
+import cv2
 
-# using skimage greycoprops we can take care of
-# energy, correlation, ASM, homogeneity, dissimilarity, and contrast
-# https://scikit-image.org/docs/dev/api/skimage.feature.html#skimage.feature.greycoprops
-
-# Leaving us with these to take care of:
-# Inertia, Entropy, Inverse Difference Moment, Sum Average,
-# Sum Variance, Sum Entropy, Difference Average, Difference
-# Variance, Difference Entropy, Information measure of correlation 1, Information measure of correlation 2, Maximal Correlation Coefficient.
+# the GLCM features computed by Spampinato et al. are Haralick features: Haralick et al. in "Textural Features for Image Classification"
+# given an input image, the mahotas library can compute the GLCM and these features for us: https://github.com/luispedro/mahotas/blob/master/mahotas/features/texture.py
+# skimage greycoprops() only computes 6: https://scikit-image.org/docs/dev/api/skimage.feature.html#skimage.feature.greycoprops
 
 
-def glcmFeatures(img):
+def skimage_glcmFeatures(img):
     glcmFeatures = {}
 
     glcm = greycomatrix(img, distances=[5], angles=[0], levels=256,
@@ -25,6 +20,13 @@ def glcmFeatures(img):
     return glcmFeatures
 
 
+def mahotas_glcmFeatures(grayImg):
+    # a 4x14 feature vector. 4, for 4 directions. 14, for 14 features listed in Haralick's paper.
+    textures = mh.features.haralick(grayImg, compute_14th_feature=True)
+    return ('glcmFeatures', textures.mean(axis=0))
+
+
 if __name__ == "__main__":
     img = test_image(True)
-    hello = glcm(img)
+    glcm = mahotas_glcmFeatures(img)
+    print('hello')

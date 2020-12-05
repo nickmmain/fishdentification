@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+from fishes import test_image
 from show import show_all_frames
 
 
@@ -18,6 +19,8 @@ def spampinatoKernels():
     scales = [2*i for i in range(1, 7)]
     lamda = np.pi/4
     gamma = 1
+    kernels = {}
+
     kernels = [
         [cv2.getGaborKernel((scales[i], scales[i]), 6, angles[j], lamda, gamma)
          for i in range(len(scales))]
@@ -28,7 +31,26 @@ def spampinatoKernels():
     return flat_kernels
 
 
-if __name__ == "__main__":
+def gaborFeatures(img):
+    gaborFeatures = {}
+    gaborFeatures['gaborFeatures'] = {}
+    gaborFeatures['gaborFeatures']['mean'] = []
+    gaborFeatures['gaborFeatures']['stdDeviation'] = []
+
     kernels = spampinatoKernels()
-    plt.imshow(kernels[20])
-    plt.show()
+
+    # applying gabor kernels from opencv gives one value for every pixel in the image.
+    filteredImgs = [cv2.filter2D(img, cv2.CV_8UC3, kernel)
+                    for kernel in kernels]
+
+    # we take the mean and standard deviation for every filtered image:
+    for img in filteredImgs:
+        gaborFeatures['gaborFeatures']['mean'].append(np.mean(img))
+        gaborFeatures['gaborFeatures']['stdDeviation'].append(np.std(img))
+
+    return gaborFeatures
+
+
+if __name__ == "__main__":
+    img = test_image(True)
+    gaborFeatures(img)
