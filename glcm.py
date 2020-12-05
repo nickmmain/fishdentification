@@ -23,7 +23,8 @@ def skimage_glcmFeatures(img):
 def mahotas_glcmFeatures(grayImg):
     # a 4x14 feature vector. 4, for 4 directions. 14, for 14 features listed in Haralick's paper.
     textures = mh.features.haralick(grayImg, compute_14th_feature=True)
-    return ('glcmFeatures', textures.mean(axis=0))
+    textureFeatures = textures.mean(axis=0)
+    return ('glcmFeatures', list(textureFeatures))
 
 
 if __name__ == "__main__":
