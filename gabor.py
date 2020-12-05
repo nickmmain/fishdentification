@@ -1,5 +1,5 @@
-import cv2
 import numpy as np
+import cv2
 import matplotlib.pyplot as plt
 from show import show_all_frames
 
@@ -29,6 +29,6 @@ def spampinatoKernels():
 
 
 if __name__ == "__main__":
-    kernels = spampinato_kernels()
+    kernels = spampinatoKernels()
     plt.imshow(kernels[20])
     plt.show()
