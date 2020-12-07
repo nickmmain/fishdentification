@@ -8,6 +8,8 @@ from sklearn.datasets import make_classification
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from features import getFeaturesArray
 
+# https://machinelearningmastery.com/linear-discriminant-analysis-with-python/
+
 
 def trainModel(fishDict, limit=None):
     features = []
