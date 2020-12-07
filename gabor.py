@@ -31,13 +31,14 @@ def spampinatoKernels():
     return flat_kernels
 
 
+kernels = spampinatoKernels()
+
+
 def gaborFeatures(img):
     gaborFeatures = {}
     gaborFeatures['gaborFeatures'] = {}
     gaborFeatures['gaborFeatures']['mean'] = []
     gaborFeatures['gaborFeatures']['stdDeviation'] = []
-
-    kernels = spampinatoKernels()
 
     # applying gabor kernels from opencv gives one value for every pixel in the image.
     filteredImgs = [cv2.filter2D(img, cv2.CV_8UC3, kernel)

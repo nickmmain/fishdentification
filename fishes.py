@@ -31,16 +31,16 @@ def masks(split=True):
     return allMasks
 
 
-def splitData(data, trainingPortion=0.7):
+def splitData(dataFolders, trainingPortion=0.7):
     '''splits the data into training and testing groups along the given fraction'''
-    for fish in data:
-        fishDataPaths = allFish[fish]
+    for dataFolder in dataFolders:
+        fishDataPaths = dataFolders[dataFolder]
         trainIndex = floor(trainingPortion*len(fishDataPaths))
-        allFish[fish] = {}
-        allFish[fish]['train'] = fishDataPaths[:trainIndex]
-        allFish[fish]['test'] = fishDataPaths[trainIndex+1:]
+        dataFolders[dataFolder] = {}
+        dataFolders[dataFolder]['train'] = fishDataPaths[:trainIndex]
+        dataFolders[dataFolder]['test'] = fishDataPaths[trainIndex+1:]
 
-    return allFish
+    return dataFolders
 
 
 def getData(folderRegex):

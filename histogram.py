@@ -22,10 +22,10 @@ def spampinatoHistogramFeatures(grayImg):
     histogram = cv2.calcHist([grayImg], [0], None, [256], [0, 256])
 
     histoFeatures = []
-    histoFeatures.append(np.mean(histogram))
-    histoFeatures.append(np.std(histogram))
-    histoFeatures.append(moment(histogram, 3)[0])
-    histoFeatures.append(moment(histogram, 4)[0])
+    histoFeatures.append(float(np.mean(histogram)))
+    histoFeatures.append(float(np.std(histogram)))
+    histoFeatures.append(float(moment(histogram, 3)[0]))
+    histoFeatures.append(float(moment(histogram, 4)[0]))
 
     return ('histoFeatures', histoFeatures)
 
