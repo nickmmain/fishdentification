@@ -15,16 +15,20 @@ def test_image(gray=True):
     return img
 
 
-def fishes():
+def fishes(split=True):
     '''returns all files in folders that start with "fish" in the data directory of this project'''
     allFish = getData("^fish.*")
-    return splitData(allFish, 0.7)
+    if(split):
+        return splitData(allFish, 0.7)
+    return allFish
 
 
-def masks():
+def masks(split=True):
     '''returns all files in folders that start with "mask" in the data directory of this project'''
     allMasks = getData("^mask.*")
-    return splitData(allMasks, 0.7)
+    if(split):
+        return splitData(allMasks, 0.7)
+    return allMasks
 
 
 def splitData(data, trainingPortion=0.7):

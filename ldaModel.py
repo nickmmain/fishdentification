@@ -1,24 +1,29 @@
+
+import json
+import cv2
+from fishes import fishes, masks
 from sklearn.datasets import make_classification
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from features import getFeaturesArray
-from fishes import test_image
 
 
-def trainModel(trainImgs):
+def trainModel(fishDict):
+    features = []
+    labels = []
 
-    # go get all features for all images
-    for img in trainImgs:
-        allFeaturesArrays = getFeaturesArray(img)
+    for imgsFolder in fishDict:
+        for imgPath in fishDict[imgsFolder]:
+            img = cv2.imread(imgPath)
+            grayImg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            features.append(getFeaturesArray(grayImg))
+            labels.append(imgsFolder)
 
-    # define dataset
-    X, y = make_classification(
-        n_samples=1000, n_features=10, n_informative=10, n_redundant=0, random_state=1)
     # define model
     model = LinearDiscriminantAnalysis()
     # fit model
-    model.fit(X, y)
+    model.fit(features, labels)
 
 
 if __name__ == "__main__":
-    img = test_image()
-    trainModel([img])
+    fishDict = fishes()
+    trainModel(fishDict)
