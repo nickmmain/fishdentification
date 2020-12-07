@@ -2,9 +2,10 @@ import cv2
 import os
 import re
 import sys
-
+from math import floor, ceil
 
 # fish dataset from: http://groups.inf.ed.ac.uk/f4k/GROUNDTRUTH/RECOG/
+dataPath = os.path.join(os.getcwd(), 'data')
 
 
 def test_image(gray=True):
@@ -14,31 +15,49 @@ def test_image(gray=True):
     return img
 
 
-# def trainingImages(gray=True, trainingPortion=0.7):
+def fishes():
+    '''returns all files in folders that start with "fish" in the data directory of this project'''
+    allFish = getData("^fish.*")
+    return splitData(allFish, 0.7)
 
 
-def trainingMasks(trainingPortion=0.7, fish='all'):
-    dataPath = os.path.join(os.getcwd(), 'data')
-    maskFolders = []
+def masks():
+    '''returns all files in folders that start with "mask" in the data directory of this project'''
+    allMasks = getData("^mask.*")
+    return splitData(allMasks, 0.7)
+
+
+def splitData(data, trainingPortion=0.7):
+    '''splits the data into training and testing groups along the given fraction'''
+    for fish in data:
+        fishDataPaths = allFish[fish]
+        trainIndex = floor(trainingPortion*len(fishDataPaths))
+        allFish[fish] = {}
+        allFish[fish]['train'] = fishDataPaths[:trainIndex]
+        allFish[fish]['test'] = fishDataPaths[trainIndex+1:]
+
+    return allFish
+
+
+def getData(folderRegex):
+    '''returns all files in folders that match folderRegex as a dictionary'''
+    dataFolders = {}
 
     for (dirpath, dirnames, filenames) in os.walk(dataPath):
         for dir in dirnames:
-            masks = re.findall("^mask.*", dir)
-            if(len(masks) != 0):
-                maskFolders.append(os.path.join(dirpath, masks[0]))
+            dataFolderMatchingRe = re.findall(folderRegex, dir)
+            if(len(dataFolderMatchingRe) != 0):
+                dataFolders[dataFolderMatchingRe[0]] = []
 
-    trainingMaskPaths = []
-    for maskFolder in maskFolders:
-        maskPaths = []
-        for (dirpath, dirnames, filenames) in os.walk(maskFolder):
-            for picture in filenames:
-                maskPaths.append(os.path.join(dirpath, picture))
+    for dataFolder in dataFolders:
+        dataFolderPath = os.path.join(dataPath, dataFolder)
+        for (dirpath, dirnames, filenames) in os.walk(dataFolderPath):
+            for fyle in filenames:
+                dataFolders[dataFolder].append(os.path.join(dirpath, fyle))
 
-        trainingMaskPaths.append(maskPaths)
-
-    return trainingMaskPaths
+    return dataFolders
 
 
 if __name__ == "__main__":
-    trainingMasksArr = trainingMasks()
+    trainingMasksArr = fishes()
     print("Whatup")

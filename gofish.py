@@ -1,7 +1,11 @@
 import json
-from fishes import test_image
-from glcm import mahotas_glcmFeatures
-from gabor import gaborFeatures
-from histogram import spampinatoHistogramFeatures
+import cv2
+from fishes import fishes, masks
+from features import getFeaturesArray
 
 # testing of the LDA model with 100 pictures of fish
+imgPaths = fishes()
+features = []
+for imgPath in imgPaths:
+    img = cv2.imread(imgPath)
+    imgFeatures = getFeaturesArray(img)
