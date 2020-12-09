@@ -6,7 +6,7 @@ from show import show_all_frames
 from scipy.stats import moment
 
 
-def spampinatoHistogramFeatures(grayImg):
+def histogramFeatures(grayImg):
     # first convert the picture to gray levels, then
     # we need: mean, standard deviation, third moment, fourth moment, contrast, correlation, energy, homogeneity
 

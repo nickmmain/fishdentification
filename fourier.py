@@ -7,7 +7,7 @@ numContourPixelsToKeep = 20
 numfourierDescriptorsToKeep = 8
 
 
-def fourier_descriptors_feature(mask):
+def fourierDescriptorsFeature(mask):
     contours, hierarchy = cv2.findContours(
         mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -58,6 +58,6 @@ if __name__ == "__main__":
     firstFishMaskPath = fishMasks['mask_01'][75]
     mask = cv2.imread(firstFishMaskPath)
     maskCv2Bw = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
-    withContours = fourier_descriptors_feature(maskCv2Bw)
+    withContours = fourierDescriptorsFeature(maskCv2Bw)
     cv2.imshow('contours of mask', withContours)
     cv2.waitKey()

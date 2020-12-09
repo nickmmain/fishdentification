@@ -15,6 +15,16 @@ def test_image(gray=True):
     return img
 
 
+def fishesAndMasks(split=True):
+    allFish = fishes(split)
+    allMasks = masks(split)
+    fishes_masks = {}
+    fishes_masks['fish'] = allFish
+    fishes_masks['masks'] = allMasks
+
+    return fishes_masks
+
+
 def fishes(split=True):
     '''returns all files in folders that start with "fish" in the data directory of this project'''
     allFish = getData("^fish.*")
@@ -63,5 +73,5 @@ def getData(folderRegex):
 
 
 if __name__ == "__main__":
-    trainingMasksArr = fishes()
+    trainingMasksArr = fishesAndMasks()
     print("Whatup")

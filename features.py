@@ -1,9 +1,10 @@
 from glcm import mahotas_glcmFeatures
 from gabor import gaborFeatures
-from histogram import spampinatoHistogramFeatures
+from histogram import histogramFeatures
+from fourier import fourierDescriptorsFeature
 
 
-def getFeaturesArray(img):
+def getImageFeatures(img):
     '''For the given image this function returns the array of all features computable by this project'''
 
     features = []
@@ -12,11 +13,20 @@ def getFeaturesArray(img):
     features.append(gf['gaborFeatures']['mean'])
     features.append(gf['gaborFeatures']['stdDeviation'])
 
-    histo = spampinatoHistogramFeatures(img)
+    histo = histogramFeatures(img)
     features.append(histo[1])
 
     glcm = mahotas_glcmFeatures(img)
     features.append(glcm[1])
+
+    return features
+
+
+def getMaskFeatures(mask):
+    features = []
+
+    fourierDscptrs = fourierDescriptorsFeature(mask)
+    features.append(fourierDscptrs["fdFeatures"])
 
     return features
 
