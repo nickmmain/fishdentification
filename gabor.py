@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-from fishes import test_image
+from fishes import test_image, nemo
 from show import show_all_frames
 
 
@@ -34,6 +34,19 @@ def spampinatoKernels():
 kernels = spampinatoKernels()
 
 
+def showKernels(plots):
+    w = 10
+    h = 10
+    fig = plt.figure(figsize=(8, 8))
+    columns = 6
+    rows = 4
+    for i in range(1, columns*rows + 1):
+        img = plots[i-1]
+        fig.add_subplot(rows, columns, i)
+        plt.imshow(img)
+    plt.show()
+
+
 def gaborFeatures(img):
     gaborFeatures = {}
     gaborFeatures['gaborFeatures'] = {}
@@ -52,19 +65,6 @@ def gaborFeatures(img):
     return gaborFeatures
 
 
-def show_all(plots):
-    w = 10
-    h = 10
-    fig = plt.figure(figsize=(8, 8))
-    columns = 6
-    rows = 4
-    for i in range(1, columns*rows + 1):
-        img = plots[i-1]
-        fig.add_subplot(rows, columns, i)
-        plt.imshow(img)
-    plt.show()
-
-
 if __name__ == "__main__":
     # img = test_image(True)
     # gaborFeatures(img)
@@ -73,5 +73,11 @@ if __name__ == "__main__":
     # plt.imshow(kernels[4])
     # plt.show()
 
+    # kernels = spampinatoKernels()
+    # showKernels(kernels)
+
     kernels = spampinatoKernels()
-    show_all(kernels)
+    img = nemo(True, True)
+    filteredImgs = [cv2.filter2D(img, cv2.CV_8UC3, kernel)
+                    for kernel in kernels]
+    showKernels(filteredImgs)

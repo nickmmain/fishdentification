@@ -15,6 +15,21 @@ def test_image(gray=True):
     return img
 
 
+def nemo(mask=True, gray=True):
+    '''A good example from the dataset of fish04'''
+    img = cv2.imread(os.path.join(os.getcwd(), 'data',
+                                  'fish_04', 'fish_000004859599_08020.png'))
+    if mask:
+        mask = cv2.imread(os.path.join(os.getcwd(), 'data',
+                                       'mask_04', 'mask_000004859599_08020.png'))
+        grayMask = cv2.cvtColor(mask, cv2.COLOR_RGB2GRAY)
+
+        img = cv2.bitwise_and(img, img, mask=grayMask)
+    if gray:
+        return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    return img
+
+
 def fishesAndMasks(split=True):
     allFish = fishes(split)
     allMasks = masks(split)
