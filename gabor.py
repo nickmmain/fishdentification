@@ -52,6 +52,26 @@ def gaborFeatures(img):
     return gaborFeatures
 
 
+def show_all(plots):
+    w = 10
+    h = 10
+    fig = plt.figure(figsize=(8, 8))
+    columns = 6
+    rows = 4
+    for i in range(1, columns*rows + 1):
+        img = plots[i-1]
+        fig.add_subplot(rows, columns, i)
+        plt.imshow(img)
+    plt.show()
+
+
 if __name__ == "__main__":
-    img = test_image(True)
-    gaborFeatures(img)
+    # img = test_image(True)
+    # gaborFeatures(img)
+
+    # kernels = spampinatoKernels()
+    # plt.imshow(kernels[4])
+    # plt.show()
+
+    kernels = spampinatoKernels()
+    show_all(kernels)
