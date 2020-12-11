@@ -59,12 +59,12 @@ def loadPreviousModel():
 
 
 if __name__ == "__main__":
-    # trainingData = fishesAndMasks(True)
+    trainingData = fishesAndMasks(True)
     # TODO: the model should not limit itself to being trained on a subset. limit should be on fishesAndMasks
-    # model = trainModel(trainingData, 300)
-    # saveModel(model)
+    model = trainModel(trainingData, 300)
+    saveModel(model)
 
-    model = loadPreviousModel()
-    testingData = fishesAndMasks(True)
-    rate = testModel(model, testingData, 100)
-    print("Correct predictions rate:"+str(rate))
+    # model = loadPreviousModel()
+    # testingData = fishesAndMasks(True)
+    # rate = testModel(model, testingData, 100)
+    # print("Correct predictions rate:"+str(rate))

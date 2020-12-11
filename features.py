@@ -70,7 +70,20 @@ def getImageFeatures(img):
 def getMaskFeatures(mask):
     features = []
 
-    fourierDscptrs = fourierDescriptorsFeature(mask)
+    # this works:
+    # fourierDscptrs = fourierDescriptorsFeature(mask, 20, 8)
+
+    # this doesn't:
+    # fourierDscptrs = fourierDescriptorsFeature(mask, None, 30)
+
+    # this does work:
+    # fourierDscptrs = fourierDescriptorsFeature(mask, None, 8)
+
+    # I think this indicates that some images don't even have 30 contour points.
+    # so let's try to retain 20 instead:
+    fourierDscptrs = fourierDescriptorsFeature(mask, None, 20)
+    # ^ it works.
+
     features.append(fourierDscptrs["fdFeatures"])
 
     return features
