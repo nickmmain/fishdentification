@@ -1,7 +1,52 @@
+import cv2
+import os
 from glcm import mahotas_glcmFeatures
 from gabor import gaborFeatures
 from histogram import histogramFeatures
 from fourier import fourierDescriptorsFeature
+
+
+def getFeatures(data, trainOrTest='train', limit=None):
+    features = []
+    labels = []
+
+    fishData = data['fish']
+    fishDataKeys = list(fishData.keys())
+    masksData = data['masks']
+    masksDataKeys = list(masksData.keys())
+
+    for i in range(len(fishData)):
+        fishTypeTrainingImgs = fishData[fishDataKeys[i]][trainOrTest]
+        fishTypeTrainingMasks = masksData[masksDataKeys[i]][trainOrTest]
+        if not limit:
+            limit = len(fishTypeTrainingImgs)
+        for j in range(len(fishTypeTrainingImgs[0:limit])):
+
+            # read image and mask
+            mask = cv2.imread(fishTypeTrainingMasks[j])
+            img = cv2.imread(fishTypeTrainingImgs[j])
+
+            # apply mask to image
+            grayMask = cv2.cvtColor(mask, cv2.COLOR_RGB2GRAY)
+            img = cv2.bitwise_and(img, img, mask=grayMask)
+
+            # get image features
+            grayImg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            imgFeaturesInArrays = getImageFeatures(grayImg)
+            imgFeaturesSingleArray = [
+                item for sublist in imgFeaturesInArrays for item in sublist]
+
+            # get mask features
+            maskFeaturesInArrays = getMaskFeatures(grayMask)
+            maskFeaturesSingleArray = [
+                item for sublist in maskFeaturesInArrays for item in sublist]
+
+            # add all features for photo, and label for this image
+            singleFeaturesArray = imgFeaturesSingleArray+maskFeaturesSingleArray
+            features.append(singleFeaturesArray)
+            labels.append(fishDataKeys[i])
+
+    return features, labels
 
 
 def getImageFeatures(img):

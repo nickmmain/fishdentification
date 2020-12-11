@@ -5,9 +5,8 @@ import pickle
 import os
 from datetime import datetime, timezone
 from fishes import fishesAndMasks
-from sklearn.datasets import make_classification
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from features import getImageFeatures, getMaskFeatures
+from features import getFeatures
 
 # https://machinelearningmastery.com/linear-discriminant-analysis-with-python/
 savedModelsTimeFormat = '%Y_%m%d_%H%M'
@@ -15,81 +14,13 @@ modelDirectory = os.path.join(os.getcwd(), 'models')
 
 
 def trainModel(trainingData, limit=None):
-    features = []
-    labels = []
-
-    fishData = trainingData['fish']
-    fishDataKeys = list(fishData.keys())
-    masksData = trainingData['masks']
-    masksDataKeys = list(masksData.keys())
-
-    for i in range(len(fishData)):
-        fishTypeTrainingImgs = fishData[fishDataKeys[i]]['train']
-        fishTypeTrainingMasks = masksData[masksDataKeys[i]]['train']
-        if not limit:
-            limit = len(fishTypeTrainingImgs)
-        for j in range(len(fishTypeTrainingImgs[0:limit])):
-
-            img = cv2.imread(fishTypeTrainingImgs[j])
-            grayImg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-            imgFeaturesInArrays = getImageFeatures(grayImg)
-
-            imgFeaturesSingleArray = [
-                item for sublist in imgFeaturesInArrays for item in sublist]
-
-            mask = cv2.imread(fishTypeTrainingMasks[j])
-            grayMask = cv2.cvtColor(mask, cv2.COLOR_RGB2GRAY)
-            maskFeaturesInArrays = getMaskFeatures(grayMask)
-
-            maskFeaturesSingleArray = [
-                item for sublist in maskFeaturesInArrays for item in sublist]
-
-            singleFeaturesArray = imgFeaturesSingleArray+maskFeaturesSingleArray
-
-            features.append(singleFeaturesArray)
-            labels.append(fishDataKeys[i])
-
-    # define model
+    features, labels = getFeatures(trainingData, 'train', limit)
     model = LinearDiscriminantAnalysis()
-    # fit model
     return model.fit(features, labels)
 
 
 def testModel(model, testData, limit=None):
-    features = []
-    labels = []
-
-    fishData = testData['fish']
-    fishDataKeys = list(fishData.keys())
-    masksData = testData['masks']
-    masksDataKeys = list(masksData.keys())
-
-    for i in range(len(fishData)):
-        fishTypeTrainingImgs = fishData[fishDataKeys[i]]['test']
-        fishTypeTrainingMasks = masksData[masksDataKeys[i]]['test']
-        if not limit:
-            limit = len(fishTypeTrainingImgs)
-        for j in range(len(fishTypeTrainingImgs[0:limit])):
-
-            img = cv2.imread(fishTypeTrainingImgs[j])
-            grayImg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-            imgFeaturesInArrays = getImageFeatures(grayImg)
-
-            imgFeaturesSingleArray = [
-                item for sublist in imgFeaturesInArrays for item in sublist]
-
-            mask = cv2.imread(fishTypeTrainingMasks[j])
-            grayMask = cv2.cvtColor(mask, cv2.COLOR_RGB2GRAY)
-            maskFeaturesInArrays = getMaskFeatures(grayMask)
-
-            maskFeaturesSingleArray = [
-                item for sublist in maskFeaturesInArrays for item in sublist]
-
-            singleFeaturesArray = imgFeaturesSingleArray+maskFeaturesSingleArray
-
-            features.append(singleFeaturesArray)
-            labels.append(fishDataKeys[i])
-
+    features, labels = getFeatures(testData, 'test', limit)
     predictions = model.predict(features)
 
     correct = 0
