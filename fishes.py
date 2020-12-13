@@ -2,10 +2,12 @@ import cv2
 import os
 import re
 import sys
+import random
 from math import floor, ceil
 
 # fish dataset from: http://groups.inf.ed.ac.uk/f4k/GROUNDTRUTH/RECOG/
 dataPath = os.path.join(os.getcwd(), 'data')
+random.seed()
 
 
 def test_image(gray=True):
@@ -30,30 +32,38 @@ def nemo(mask=True, gray=True):
     return img
 
 
-def fishesAndMasks(split=True):
-    allFish = fishes(split)
-    allMasks = masks(split)
-    fishes_masks = {}
-    fishes_masks['fish'] = allFish
-    fishes_masks['masks'] = allMasks
+def fishesAndMasks(splitFraction, maxFish):
+    fishesAndMasks = {}
+    fishesAndMasks['data_dir'] = dataPath
 
-    return fishes_masks
+    fishes = getFishes(maxFish)
+
+    for fish in fishes:
+        maskForFish = fish.replace('fish', 'mask')
+        fishesAndMasks[maskForFish] = []
+        for picFileName in fishes[fish]:
+
+            maskFileName = picFileName.replace('fish', 'mask')
+            fullMaskPath = (os.path.join(dataPath, maskForFish, maskFileName))
+
+            assert os.path.exists(
+                fullMaskPath), "coulnd't find the mask which correponds to "+picPath+":"+maskPath
+
+            fishesAndMasks[maskForFish].append(maskFileName)
+
+    fishesAndMasks.update(fishes)
+
+    return fishes
 
 
-def fishes(split=True):
+def getFishes(maxFish):
     '''returns all files in folders that start with "fish" in the data directory of this project'''
-    allFish = getData("^fish.*")
-    if(split):
-        return splitData(allFish, 0.7)
-    return allFish
+    allFishFolders = getDataFolders("^fish.*")
+    for fishFolder in allFishFolders:
+        allFishFolders[fishFolder] = getData(
+            os.path.join(dataPath, fishFolder), maxFish)
 
-
-def masks(split=True):
-    '''returns all files in folders that start with "mask" in the data directory of this project'''
-    allMasks = getData("^mask.*")
-    if(split):
-        return splitData(allMasks, 0.7)
-    return allMasks
+    return allFishFolders
 
 
 def splitData(dataFolders, trainingPortion=0.7):
@@ -68,8 +78,8 @@ def splitData(dataFolders, trainingPortion=0.7):
     return dataFolders
 
 
-def getData(folderRegex):
-    '''returns all files in folders that match folderRegex as a dictionary'''
+def getDataFolders(folderRegex):
+    '''returns folders that match folderRegex as a dictionary'''
     dataFolders = {}
 
     for (dirpath, dirnames, filenames) in os.walk(dataPath):
@@ -78,15 +88,26 @@ def getData(folderRegex):
             if(len(dataFolderMatchingRe) != 0):
                 dataFolders[dataFolderMatchingRe[0]] = []
 
-    for dataFolder in dataFolders:
-        dataFolderPath = os.path.join(dataPath, dataFolder)
-        for (dirpath, dirnames, filenames) in os.walk(dataFolderPath):
-            for fyle in filenames:
-                dataFolders[dataFolder].append(os.path.join(dirpath, fyle))
-
     return dataFolders
 
 
+def getData(dataFolderPath, maxFiles, randomFiles=True):
+    filePaths = []
+
+    for (dirpath, dirnames, filenames) in os.walk(dataFolderPath):
+
+        filesIndices = []
+        if(randomFiles):
+            filesIndices = random.sample(range(len(filenames)), maxFiles)
+        else:
+            filesIndices = range(maxFiles)
+
+        for filesIndex in filesIndices:
+            filePaths.append(filenames[filesIndex])
+
+    return filePaths
+
+
 if __name__ == "__main__":
-    trainingMasksArr = fishesAndMasks()
+    fish = fishesAndMasks(0.7, 100)
     print("Whatup")
