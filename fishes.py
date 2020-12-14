@@ -32,10 +32,8 @@ def nemo(mask=True, gray=True):
     return img
 
 
-def fishesAndMasks(splitFraction, maxFish):
+def fishesAndMasks(trainingPortion, maxFish):
     fishesAndMasks = {}
-    fishesAndMasks['data_dir'] = dataPath
-
     fishes = getFishes(maxFish)
 
     for fish in fishes:
@@ -52,8 +50,10 @@ def fishesAndMasks(splitFraction, maxFish):
             fishesAndMasks[maskForFish].append(maskFileName)
 
     fishesAndMasks.update(fishes)
+    fishesAndMasks = splitData(fishesAndMasks, trainingPortion)
+    fishesAndMasks['data_dir'] = dataPath
 
-    return fishes
+    return fishesAndMasks
 
 
 def getFishes(maxFish):
@@ -69,11 +69,11 @@ def getFishes(maxFish):
 def splitData(dataFolders, trainingPortion=0.7):
     '''splits the data into training and testing groups along the given fraction'''
     for dataFolder in dataFolders:
-        fishDataPaths = dataFolders[dataFolder]
-        trainIndex = floor(trainingPortion*len(fishDataPaths))
+        dataPaths = dataFolders[dataFolder]
+        trainUpToIndex = floor(trainingPortion*len(dataPaths))
         dataFolders[dataFolder] = {}
-        dataFolders[dataFolder]['train'] = fishDataPaths[:trainIndex]
-        dataFolders[dataFolder]['test'] = fishDataPaths[trainIndex+1:]
+        dataFolders[dataFolder]['train'] = dataPaths[:trainUpToIndex]
+        dataFolders[dataFolder]['test'] = dataPaths[trainUpToIndex+1:]
 
     return dataFolders
 
