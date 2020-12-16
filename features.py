@@ -16,14 +16,18 @@ def getFeatures(data, trainOrTest='train'):
     masksDataKeys = list(masksData.keys())
 
     for i in range(len(fishData)):
-        fishTypeTrainingImgs = fishData[fishDataKeys[i]][trainOrTest]
         fishTypeTrainingMasks = masksData[masksDataKeys[i]][trainOrTest]
+        fishTypeTrainingImgs = fishData[fishDataKeys[i]][trainOrTest]
 
         for j in range(len(fishTypeTrainingImgs)):
+            maskPath = os.path.join(
+                data['data_dir'], masksDataKeys[i], fishTypeTrainingMasks[j])
+            fishPath = os.path.join(
+                data['data_dir'], fishDataKeys[i], fishTypeTrainingImgs[j])
 
             # read image and mask
-            mask = cv2.imread(fishTypeTrainingMasks[j])
-            img = cv2.imread(fishTypeTrainingImgs[j])
+            mask = cv2.imread(maskPath)
+            img = cv2.imread(fishPath)
 
             # apply mask to image
             grayMask = cv2.cvtColor(mask, cv2.COLOR_RGB2GRAY)
@@ -80,7 +84,7 @@ def getMaskFeatures(mask):
 
     # I think this indicates that some images don't even have 30 contour points.
     # so let's try to retain 20 instead:
-    fourierDscptrs = fourierDescriptorsFeature(mask, None, 20)
+    fourierDscptrs = fourierDescriptorsFeature(mask, None, 10)
     # ^ it works.
 
     features.append(fourierDscptrs["fdFeatures"])

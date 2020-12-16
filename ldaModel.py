@@ -1,4 +1,3 @@
-
 import json
 import cv2
 import pickle
@@ -42,6 +41,7 @@ def saveModel(model):
 
 
 def loadPreviousModel():
+    '''Get previously saved models, deserializes the file name as a date, and returns the most recently created'''
     newest = datetime(1970, 1, 1)
 
     for (dirpath, dirnames, filenames) in os.walk(modelDirectory):
@@ -65,5 +65,5 @@ if __name__ == "__main__":
 
     # model = loadPreviousModel()
     # testingData = fishesAndMasks(True)
-    # rate = testModel(model, testingData, 100)
+    # rate = testModel(model, testingData)
     # print("Correct predictions rate:"+str(rate))
