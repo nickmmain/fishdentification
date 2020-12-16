@@ -1,6 +1,7 @@
 import cv2
+import os
 import numpy as np
-from fishes import masks
+from fishes import getMasks, dataPath
 
 
 def fourierDescriptorsFeature(mask, contourPointsLimit=None, numFourierDescriptorsToKeep=30):
@@ -68,10 +69,8 @@ def checkForMultipleContours(contours):
 
 
 if __name__ == "__main__":
-    fishMasks = masks(False)
+    fishMasks = getMasks(100)
     firstFishMaskPath = fishMasks['mask_01'][75]
-    mask = cv2.imread(firstFishMaskPath)
+    mask = cv2.imread(os.path.join(dataPath, 'mask_01', firstFishMaskPath))
     maskCv2Bw = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
     withContours = fourierDescriptorsFeature(maskCv2Bw)
-    cv2.imshow('contours of mask', withContours)
-    cv2.waitKey()

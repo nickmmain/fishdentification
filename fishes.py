@@ -33,24 +33,16 @@ def nemo(mask=True, gray=True):
 
 
 def fishesAndMasks(trainingPortion, maxFish):
-    fishesAndMasks = {}
+    '''First gets all pictures of fish in directories starting with "fish", then gets corresponding masks in corresponding "mask" folders'''
     fishes = getFishes(maxFish)
+    masks = getMasksForFishes(fishes)
 
-    for fish in fishes:
-        maskForFish = fish.replace('fish', 'mask')
-        fishesAndMasks[maskForFish] = []
-        for picFileName in fishes[fish]:
+    fishes = splitData(fishes, trainingPortion)
+    masks = splitData(masks, trainingPortion)
 
-            maskFileName = picFileName.replace('fish', 'mask')
-            fullMaskPath = (os.path.join(dataPath, maskForFish, maskFileName))
-
-            assert os.path.exists(
-                fullMaskPath), "coulnd't find the mask which correponds to "+picPath+":"+maskPath
-
-            fishesAndMasks[maskForFish].append(maskFileName)
-
-    fishesAndMasks.update(fishes)
-    fishesAndMasks = splitData(fishesAndMasks, trainingPortion)
+    fishesAndMasks = {}
+    fishesAndMasks['fish'] = fishes
+    fishesAndMasks['masks'] = masks
     fishesAndMasks['data_dir'] = dataPath
 
     return fishesAndMasks
@@ -64,6 +56,34 @@ def getFishes(maxFish):
             os.path.join(dataPath, fishFolder), maxFish)
 
     return allFishFolders
+
+
+def getMasksForFishes(fishes):
+    masks = {}
+
+    for fish in fishes:
+        maskForFish = fish.replace('fish', 'mask')
+        masks[maskForFish] = []
+        for picFileName in fishes[fish]:
+
+            maskFileName = picFileName.replace('fish', 'mask')
+            fullMaskPath = (os.path.join(dataPath, maskForFish, maskFileName))
+
+            assert os.path.exists(
+                fullMaskPath), "coulnd't find the mask which correponds to "+picFileName+":"+fullMaskPath
+
+            masks[maskForFish].append(maskFileName)
+
+    return masks
+
+
+def getMasks(maxMasks):
+    '''returns all files in folders that start with "mask" in the data directory of this project'''
+    allMasks = getDataFolders("^mask.*")
+    for maskFolder in allMasks:
+        allMasks[maskFolder] = getData(
+            os.path.join(dataPath, maskFolder), maxMasks, False)
+    return allMasks
 
 
 def splitData(dataFolders, trainingPortion=0.7):

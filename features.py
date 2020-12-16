@@ -6,7 +6,7 @@ from histogram import histogramFeatures
 from fourier import fourierDescriptorsFeature
 
 
-def getFeatures(data, trainOrTest='train', limit=None):
+def getFeatures(data, trainOrTest='train'):
     features = []
     labels = []
 
@@ -18,9 +18,8 @@ def getFeatures(data, trainOrTest='train', limit=None):
     for i in range(len(fishData)):
         fishTypeTrainingImgs = fishData[fishDataKeys[i]][trainOrTest]
         fishTypeTrainingMasks = masksData[masksDataKeys[i]][trainOrTest]
-        if not limit:
-            limit = len(fishTypeTrainingImgs)
-        for j in range(len(fishTypeTrainingImgs[0:limit])):
+
+        for j in range(len(fishTypeTrainingImgs)):
 
             # read image and mask
             mask = cv2.imread(fishTypeTrainingMasks[j])

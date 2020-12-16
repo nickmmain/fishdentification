@@ -13,14 +13,14 @@ savedModelsTimeFormat = '%Y_%m%d_%H%M'
 modelDirectory = os.path.join(os.getcwd(), 'models')
 
 
-def trainModel(trainingData, limit=None):
-    features, labels = getFeatures(trainingData, 'train', limit)
+def trainModel(trainingData):
+    features, labels = getFeatures(trainingData, 'train')
     model = LinearDiscriminantAnalysis()
     return model.fit(features, labels)
 
 
-def testModel(model, testData, limit=None):
-    features, labels = getFeatures(testData, 'test', limit)
+def testModel(model, testData):
+    features, labels = getFeatures(testData, 'test')
     predictions = model.predict(features)
 
     correct = 0
@@ -59,12 +59,11 @@ def loadPreviousModel():
 
 
 if __name__ == "__main__":
-    # trainingData = fishesAndMasks(True)
-    # TODO: the model should not limit itself to being trained on a subset. limit should be on fishesAndMasks
-    # model = trainModel(trainingData, 300)
-    # saveModel(model)
+    trainingData = fishesAndMasks(0.7, 300)
+    model = trainModel(trainingData)
+    saveModel(model)
 
-    model = loadPreviousModel()
-    testingData = fishesAndMasks(True)
-    rate = testModel(model, testingData, 100)
-    print("Correct predictions rate:"+str(rate))
+    # model = loadPreviousModel()
+    # testingData = fishesAndMasks(True)
+    # rate = testModel(model, testingData, 100)
+    # print("Correct predictions rate:"+str(rate))
