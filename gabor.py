@@ -35,6 +35,8 @@ kernels = spampinatoKernels()
 
 
 def showKernels(plots):
+    '''Shows the static Gabor kernels used by this project'''
+
     w = 10
     h = 10
     fig = plt.figure(figsize=(8, 8))
@@ -48,6 +50,8 @@ def showKernels(plots):
 
 
 def gaborFeatures(img):
+    '''For the image given, this convolves static Gabor kernels with the image given. Mean and Standard deviation are then returned.'''
+
     gaborFeatures = {}
     gaborFeatures['gaborFeatures'] = {}
     gaborFeatures['gaborFeatures']['mean'] = []

@@ -42,6 +42,7 @@ def saveModel(model):
 
 def loadPreviousModel():
     '''Get previously saved models, deserializes the file name as a date, and returns the most recently created'''
+
     newest = datetime(1970, 1, 1)
 
     for (dirpath, dirnames, filenames) in os.walk(modelDirectory):

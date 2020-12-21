@@ -7,6 +7,12 @@ from fourier import fourierDescriptorsFeature
 
 
 def getFeatures(data, trainOrTest='train'):
+    '''For the given data this function returns all features computable by this project. 
+
+    Args: 
+    data -- dictionary of form described in datadict.json
+    trainOrtest -- to use the "train" or "test" key of the data dict. Not too proud of this.'''
+
     features = []
     labels = []
 
@@ -71,6 +77,8 @@ def getImageFeatures(img):
 
 
 def getMaskFeatures(mask):
+    '''For the given mask this function returns the array of all features computable by this project'''
+
     features = []
 
     # this works:

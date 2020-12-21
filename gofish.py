@@ -3,8 +3,6 @@ import cv2
 from fishes import fishesAndMasks
 from ldaModel import trainModel, testModel
 
-# testing of the LDA model with 100 pictures of fish
-
 if __name__ == "__main__":
     trainAndTestCount = 10
     results = []
@@ -16,6 +14,7 @@ if __name__ == "__main__":
         # train the model
         model = trainModel(data)
 
+        # test the model
         result = testModel(model, data)
         results.append(result)
 

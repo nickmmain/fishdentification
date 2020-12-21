@@ -5,6 +5,13 @@ from fishes import getMasks, dataPath
 
 
 def fourierDescriptorsFeature(mask, contourPointsLimit=None, numFourierDescriptorsToKeep=30):
+    '''For the given mask, return the first Fourier Descriptors up to numFourierDescriptorsToKeep.
+
+    Args:
+    mask -- a mask, in the cv2.COLOR_RGB2GRAY colorspace
+    contourPointsLimit -- For large images, using a limited number of points for the contour is efficient.
+    numFourierDescriptorsToKeep -- Number of fourier descriptors to return from the DFT'''
+
     contours, hierarchy = cv2.findContours(
         mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 

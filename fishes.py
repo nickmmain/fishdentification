@@ -19,6 +19,7 @@ def test_image(gray=True):
 
 def nemo(mask=True, gray=True):
     '''A good example from the dataset of fish04'''
+
     img = cv2.imread(os.path.join(os.getcwd(), 'data',
                                   'fish_04', 'fish_000004859599_08020.png'))
     if mask:
@@ -34,6 +35,7 @@ def nemo(mask=True, gray=True):
 
 def fishesAndMasks(trainingPortion, maxFish):
     '''First gets all pictures of fish in directories starting with "fish", then gets corresponding masks in corresponding "mask" folders'''
+
     fishes = getFishes(maxFish)
     masks = getMasksForFishes(fishes)
 
@@ -49,7 +51,8 @@ def fishesAndMasks(trainingPortion, maxFish):
 
 
 def getFishes(maxFish):
-    '''returns all files in folders that start with "fish" in the data directory of this project'''
+    '''Returns all files in folders that start with "fish" in the data directory of this project'''
+
     allFishFolders = getDataFolders("^fish.*")
     for fishFolder in allFishFolders:
         allFishFolders[fishFolder] = getData(
@@ -78,7 +81,8 @@ def getMasksForFishes(fishes):
 
 
 def getMasks(maxMasks):
-    '''returns all files in folders that start with "mask" in the data directory of this project'''
+    '''Returns all files in folders that start with "mask" in the data directory of this project'''
+
     allMasks = getDataFolders("^mask.*")
     for maskFolder in allMasks:
         allMasks[maskFolder] = getData(
@@ -87,7 +91,8 @@ def getMasks(maxMasks):
 
 
 def splitData(dataFolders, trainingPortion=0.7):
-    '''splits the data into training and testing groups along the given fraction'''
+    '''Splits the data into training and testing groups along the given fraction'''
+
     for dataFolder in dataFolders:
         dataPaths = dataFolders[dataFolder]
         trainUpToIndex = floor(trainingPortion*len(dataPaths))
@@ -99,7 +104,8 @@ def splitData(dataFolders, trainingPortion=0.7):
 
 
 def getDataFolders(folderRegex):
-    '''returns folders that match folderRegex as a dictionary'''
+    '''Returns folders that match folderRegex as a dictionary'''
+
     dataFolders = {}
 
     for (dirpath, dirnames, filenames) in os.walk(dataPath):
@@ -112,6 +118,8 @@ def getDataFolders(folderRegex):
 
 
 def getData(dataFolderPath, maxFiles, randomFiles=True):
+    '''Gets all the files found in dataFolderPath, up to maxFiles, with the option to choose randomly.'''
+
     filePaths = []
 
     for (dirpath, dirnames, filenames) in os.walk(dataFolderPath):
