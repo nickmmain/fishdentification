@@ -12,14 +12,18 @@ Below is a diagram of the work done in the original paper. The red box indicates
 
 ## Running the project
 
-1. Install the Python packages used by the program: `pip install -r requirements.txt`. it is recommended that you install these into a Python virtual environment, to not interfere with any other versions of these packages, that you may have installed for other projects.
+1. Install the Python packages used by the program: `pip install -r requirements.txt`. it is recommended that you install these into a Python virtual environment, to not interfere with any other versions of these packages that you may have installed for other projects.
 
 2. Download fish pictures and their respective masks from the Fish4Knowledge dataset: http://groups.inf.ed.ac.uk/f4k/GROUNDTRUTH/RECOG/
 
-If you use the project as-is, you will need at least 300 photos and masks, thus fish numbered `01-05` and `07` are best.
+   If you use the project as-is, you will need at least 300 photos and masks, thus fish numbered `01-05` and `07` are best.
 
 3. Unzip the fish and masks in the `data` folder of this project, so that fish and masks are all arranged in a flat list, as such:
 
-![flatlist](/readme_flatlist.jpg)
+<p align="center">
+  <img width="460" height="300" src="/readme_flatlist.jpg">
+</p>
+
+<!-- ![flatlist](/readme_flatlist.jpg) -->
 
 4. run gofish.py
