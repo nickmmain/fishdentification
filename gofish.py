@@ -4,7 +4,7 @@ from fishes import fishesAndMasks
 from ldaModel import trainModel, testModel
 
 if __name__ == "__main__":
-    trainAndTestCount = 10
+    trainAndTestCount = 3
     results = []
 
     for i in range(trainAndTestCount):
