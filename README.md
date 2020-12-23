@@ -21,7 +21,7 @@ Below is a diagram of the work done in the original paper. The red box indicates
 3. Unzip the fish and masks in the `data` folder of this project, so that fish and masks are all arranged in a flat list, as such:
 
 <p align="center">
-  <img width="460" height="300" src="/readme_flatlist.jpg">
+  <img src="/readme_flatlist.jpg">
 </p>
 
 <!-- ![flatlist](/readme_flatlist.jpg) -->
