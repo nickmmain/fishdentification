@@ -3,7 +3,7 @@ import os
 import re
 import sys
 import random
-from math import floor, ceil
+from math import floor
 
 # fish dataset from: http://groups.inf.ed.ac.uk/f4k/GROUNDTRUTH/RECOG/
 dataPath = os.path.join(os.getcwd(), 'data')
