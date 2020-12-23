@@ -8,7 +8,9 @@ To classify fish by species as described in [Automatic fish classification for u
 
 Below is a diagram of the work done in the original paper. The red box indicates what is covered in this repo.
 
-![fishdentification](/fishdentification.jpg)
+<p align="center">
+  <img src="/fishdentification.jpg">
+</p>
 
 ## Running the project
 
@@ -24,6 +26,4 @@ Below is a diagram of the work done in the original paper. The red box indicates
   <img src="/readme_flatlist.jpg">
 </p>
 
-<!-- ![flatlist](/readme_flatlist.jpg) -->
-
-4. run gofish.py
+4. **run gofish.py**. The program will train and test itself for the number of times hardcoded in gofish.py (3, by default.), then print the results.
