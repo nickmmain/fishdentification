@@ -1,3 +1,4 @@
 scuba/
-data/
+data/fish*
+data/mask*
 *.pyc
