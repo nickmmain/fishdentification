@@ -4,6 +4,7 @@ import re
 import sys
 import random
 from math import floor
+from contours import checkForMultipleContours
 
 # fish dataset from: http://groups.inf.ed.ac.uk/f4k/GROUNDTRUTH/RECOG/
 dataPath = os.path.join(os.getcwd(), 'data')
@@ -11,10 +12,25 @@ random.seed()
 
 
 def test_image(gray=True):
-    img = cv2.imread(os.path.join(os.getcwd(), 'data', 'tawachiche.jpg'))
+    '''Just a test image'''
+
+    img = cv2.imread(os.path.join(dataPath, 'tawachiche.jpg'))
     if gray:
         return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     return img
+
+
+def shape():
+    '''Just a test contour'''
+
+    img = cv2.imread(os.path.join(dataPath, 'shapes.png'))
+    grayShapes = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    bwShapes = cv2.threshold(grayShapes, 127, 255, cv2.THRESH_BINARY)[1]
+
+    contours, hierarchy = cv2.findContours(
+        bwShapes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    return contours[1]
 
 
 def nemo(mask=True, gray=True):
@@ -137,5 +153,4 @@ def getData(dataFolderPath, maxFiles, randomFiles=True):
 
 
 if __name__ == "__main__":
-    fish = fishesAndMasks(0.7, 100)
-    print("Whatup")
+    shapes()

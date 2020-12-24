@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from fishes import test_image
-from show import show_all_frames
 from scipy.stats import moment
 
 
